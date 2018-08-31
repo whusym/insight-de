@@ -1,13 +1,16 @@
 from functools import reduce
 from argparse import ArgumentParser
-
+import time
 
 def read_actual(path, idx):
     '''
-    Helper function to read the actual results。
+    Helper function to read the actual results
 
+    Params:
     path: the path to the prediction file.
     idx: index of each timestamp.
+
+    Returns a dictionary with a stock and its value at a timestamp.
     '''
     with open(path, 'r') as inputs:
         actual_dict = {row.split('|')[1]: float(row.split('|')[2])
@@ -18,8 +21,12 @@ def read_predicted(path, idx, actual_dict):
     '''
     Helper function to read the predicted results
 
+    Params:
     path: the path to the prediction file.
     idx: index of each timestamp.
+
+    Returns a pair of values containing total value difference and total
+    number of differed values at a time
     '''
     try:
         with open(path, 'r') as predicted:
@@ -38,9 +45,12 @@ def read_predicted(path, idx, actual_dict):
 def division(window_pair):
     '''
     Helper function to get the result for each window by dividing the total diff by the count within.
+
+    Params:
     window_pair: a pair including the total number of the difference in a certain window, and the
     total number of predicted value.
-    Returns a float value or 'NA' if the denominator is 0.
+
+    Returns a float value as result or 'NA' if the denominator is 0.
     '''
     if window_pair[1] != 0:
         res = str("{0:.2f}".format(window_pair[0] / window_pair[1]))
@@ -78,7 +88,6 @@ def main(actual_path, predict_path, window_path, output_path):
         print ("Error occurred while reading the file for window numbers. Please contact the administrator.")
 
 
-
     # get a list of differences between actual and prediction at each time stamp
     print ('Reading the prediction file...')
     diff_list = [read_predicted(predict_path, i, read_actual(actual_path, i)) for i in range(1, last_row + 1)]
@@ -92,10 +101,14 @@ def main(actual_path, predict_path, window_path, output_path):
         for row in res:
             filewrite.write('{}|{}|{}\n'.format(counter, str(counter + int(window_num) - 1), row))
             counter += 1
-    print ('All done! Check the output file for results.')
+
 
 
 if __name__ == '__main__':
+    start_time = time.time()
+    print ("###### Answer to Insight Data Engineering Challenge ######")
+    print ("##########          Author: Jeremy Shi         ###########")
+    print ("##########          August 31st, 2018          ###########\n")
 
     parser = ArgumentParser()
     parser.add_argument('-a', '--actual', dest='actual_path', help='path to input file', required=True)
@@ -105,3 +118,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     main(args.actual_path, args.predict_path, args.window_path, args.output_path)
+
+    process_time = time.time() - start_time
+    print ('All done! All processes take {} seconds. Check the output file for results.'.format(process_time))
