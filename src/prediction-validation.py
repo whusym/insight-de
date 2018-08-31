@@ -21,14 +21,17 @@ def read_predicted(path, idx, actual_dict):
     path: the path to the prediction file.
     idx: index of each timestamp.
     '''
-    with open(path, 'r') as predicted:
-        price_diff_val_total, price_diff_quant_total = 0, 0
-        for row in predicted:
-            row = row[:-1]   # remove the newline char at the end of each line
-            row = row.split('|')   # split the line into a list using pipe
-            if int(row[0]) == idx and row[1] in actual_dict:
-                price_diff_val_total += abs(actual_dict[row[1]] - float(row[2]))
-                price_diff_quant_total += 1
+    try:
+        with open(path, 'r') as predicted:
+            price_diff_val_total, price_diff_quant_total = 0, 0
+            for row in predicted:
+                row = row[:-1]   # remove the newline char at the end of each line
+                row = row.split('|')   # split the line into a list using pipe
+                if int(row[0]) == idx and row[1] in actual_dict:
+                    price_diff_val_total += abs(actual_dict[row[1]] - float(row[2]))
+                    price_diff_quant_total += 1
+    except:
+        print ("Error occurred while reading the file for the predicted values. Please contact the administrator.")
 
     return (price_diff_val_total, price_diff_quant_total)
 
@@ -56,17 +59,24 @@ def main(actual_path, predict_path, window_path, output_path):
     '''
 
     # Get the total number of time stamps
-    with open(actual_path, 'r') as predict:
-        for row in predict:
-            row = row[:-1]   # remove the newline char at the end of each line
-            row = row.split('|')   # split the line into a list using
-            last_row = row[0]
-    last_row = int(last_row)
+    try:
+        with open(actual_path, 'r') as predict:
+            for row in predict:
+                row = row[:-1]   # remove the newline char at the end of each line
+                row = row.split('|')   # split the line into a list using
+                last_row = row[0]
+        last_row = int(last_row)
+    except:
+        print ("Error occurred while reading the file for the actual values. Please contact the administrator.")
 
     # get the window number
-    with open(window_path, 'r') as windowfile:
-        window_num = windowfile.read()
-        window_num = int(window_num)
+    try:
+        with open(window_path, 'r') as windowfile:
+            window_num = windowfile.read()
+            window_num = int(window_num)
+    except:
+        print ("Error occurred while reading the file for window numbers. Please contact the administrator.")
+
 
 
     # get a list of differences between actual and prediction at each time stamp
