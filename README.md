@@ -50,5 +50,5 @@ To run this program, simply navigate to the folder of this repo on your local ma
 ### Dependencies
 - Python 3.6
 
-You only need native Python to run this program. It should work in 
+You only need native Python to run this program. It should work in Python 3.5 and Python 3.7 also. To make sure you have Python 3 installed in your command line environment, simply type `python3` in the command line and check whether the Python environment is correctly loaded.
 ### Advanced
