@@ -3,6 +3,7 @@
 1. [Introduction and Background](README.md#introduction)
 1. [Challenge details](README.md#challenge-details)
 1. [How to run](README.md#how-to-run)
+1. [Author](README.md#author)
 
 
 
@@ -51,4 +52,20 @@ To run this program, simply navigate to the folder of this repo on your local ma
 - Python 3.6
 
 You only need native Python to run this program. It should work in Python 3.5 and Python 3.7 also. To make sure you have Python 3 installed in your command line environment, simply type `python3` in the command line and check whether the Python environment is correctly loaded.
-### Advanced
+### Advanced usage
+In `run.sh` file, you can find the following command,
+```
+python3 ./src/prediction-validation.py -a ./input/actual.txt -p ./input/predicted.txt -w ./input/window.txt  -o ./output/comparison.txt
+```
+Here are what each argument in `./src/prediction-validation.py` means:
+- `-a`: the path to the file containing actual values. REQUIRED
+- `-p`: the path to the file containing predicted values.REQUIRED
+- `-w`: the path to the file containing window value. REQUIRED
+- `-o`: the path to the output file. OPTIONAL; If not specified, the default value is `./output/comparison.txt`.
+
+By modifying the keyword arguments within the `run.sh` file, you can customize the paths to those files mentioned above.
+
+## Author
+Yuanming (Jeremy) Shi, Institute for Artificial Intelligence, University of Georgia
+
+For original repo, please check this repo [https://github.com/InsightDataScience/prediction-validation](https://github.com/InsightDataScience/prediction-validation)
